@@ -1,5 +1,7 @@
 # Obscura — Minecraft Java Launcher
 
+[![GitHub release (latest by date)](https://shields.io)]([https://github.com](https://github.com/RenG1n/Obscura-Launcher/releases/tag/Beta-v0.2.0-publish))
+
 Electron-лаунчер. Дизайн (матовый тёмный, лаймовый акцент, без градиентов) сохранён.
 
 ## Windows: команды
