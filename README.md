@@ -1,8 +1,6 @@
 # Obscura — Minecraft Java Launcher
 
-[![Скачать Beta](https://shields.io)](https://github.com/RenG1n/Obscura-Launcher/releases/tag/Beta-v0.2.0-publish)
-
-Electron-лаунчер. Дизайн (матовый тёмный, лаймовый акцент, без градиентов) сохранён.
+Открытый (MIT) Electron-лаунчер для Minecraft Java Edition. Требуется лицензионный аккаунт Microsoft. Дизайн (матовый тёмный, лаймовый акцент, без градиентов) сохранён.
 
 ## Windows: команды
 
@@ -10,11 +8,11 @@ Electron-лаунчер. Дизайн (матовый тёмный, лаймов
 
 ```powershell
 npm install          # зависимости (Electron, @xmcl/core, @xmcl/installer, prismarine-auth, electron-builder)
-npm test             # 46 автотестов
+npm test             # автотесты
 npm run doctor       # проверка библиотек, манифеста Mojang, Java и памяти на вашем ПК
 npm start            # запуск лаунчера
-npm run dist         # установщик: dist\Obscura-Setup-0.2.0.exe
-npm run dist:portable  # переносимый .exe: dist\Obscura-Portable-0.2.0.exe
+npm run dist         # установщик: dist\Obscura-Setup-0.3.1.exe
+npm run dist:portable  # переносимый .exe: dist\Obscura-Portable-0.3.1.exe
 npm run dist:all     # оба сразу
 ```
 
@@ -26,7 +24,7 @@ npm run doctor -- --install 1.21.8
 
 Если `npm install` в PowerShell пишет «running scripts is disabled», выполните один раз `Set-ExecutionPolicy -Scope CurrentUser RemoteSigned` (или используйте `npm.cmd` вместо `npm`).
 
-Если `npm run dist` падает с «Cannot create symbolic link» — включите «Режим разработчика» Windows
+Сборка встраивает иконку в `.exe`, поэтому билдер скачивает свои инструменты и создаёт символические ссылки. Если `npm run dist` падает с «Cannot create symbolic link» — включите «Режим разработчика» Windows
 (Параметры → Для разработчиков) или запустите PowerShell от администратора.
 
 ## Структура
@@ -42,7 +40,9 @@ npm run doctor -- --install 1.21.8
 | `src/main/auth.js` | Вход Microsoft через `prismarine-auth`, токены шифруются `safeStorage` (DPAPI) |
 | `src/main/{settings,ram,java,backgrounds,logger}.js` | Настройки, проверка RAM, поиск Java, свой фон, лог с маскированием токенов |
 | `src/renderer/*` | Исходный интерфейс; `renderer.js` теперь вызывает `window.obscura` |
-| `scripts/doctor.js` | Самопроверка на реальной машине |
+| `scripts/doctor.js` | Самопроверка на реальной машине (библиотеки, серверы Mojang/Microsoft, Java, память, тестовая установка) |
+| `src/renderer/scripts/news-data.js` | Текст страницы «Новости» (список изменений) |
+| `build/icon.ico` | Иконка приложения (окно, панель задач, .exe, установщик) |
 | `test/*.test.js` | Автотесты |
 
 Данные пользователя: `%APPDATA%\Obscura\` (настройки, фон, `minecraft\`, `logs\launcher.log`, `auth\`).
@@ -56,6 +56,10 @@ npm run doctor -- --install 1.21.8
 ```powershell
 $env:OBSCURA_MS_CLIENT_ID = "ваш-client-id"; npm start
 ```
+
+## Фон
+
+В качестве фона подходит любое изображение, которое открывает Chromium (PNG, JPEG, WebP, GIF, BMP, AVIF, SVG): выбор файла в «Настройки → Своя картинка», правая кнопка на «Изменить фон» или перетаскивание на главную. Лаунчер уменьшает картинку до 2560 px, сохраняет как WebP, а главный процесс повторно проверяет содержимое файла.
 
 ## Что проверено, а что нет
 
@@ -80,3 +84,21 @@ $env:OBSCURA_MS_CLIENT_ID = "ваш-client-id"; npm start
 Лицензия исходного кода не выбрана — добавьте файл `LICENSE` на своё усмотрение. Проект не связан с Mojang Studios,
 Microsoft и не одобрен ими. Minecraft — торговая марка Mojang Studios. Лаунчер запускает игру только для аккаунтов
 с купленной лицензией Minecraft: Java Edition.
+
+
+## Ошибки
+
+Любая проблема получает номер `OBS-xxx`, показывается в окне лаунчера и сохраняется в `%APPDATA%\Obscura\errors`. Полный список: [docs/ERRORS.md](docs/ERRORS.md).
+
+## Java
+
+Для запуска нужна Java 64-bit: 21 для Minecraft 1.20.5+, 17 для 1.17–1.20.4, 8 для старых. Например: `winget install EclipseAdoptium.Temurin.21.JDK`.
+
+## Лицензия и отказ от ответственности
+
+[MIT](LICENSE). Obscura не является официальным продуктом Mojang Studios или Microsoft. Minecraft — торговая марка Mojang Studios. Лаунчер не содержит обхода лицензии.
+
+
+## Authentication modes and accounts
+
+Settings include Microsoft authentication and a local/offline profile mode. Microsoft accounts can be added, selected, and removed independently in the account manager. The local profile uses a Minecraft offline UUID and is intended for single-player and servers configured without online-mode authentication; it does not grant a Minecraft license or authenticate to official online services. Microsoft token caches continue to use Electron `safeStorage` when OS encryption is available.

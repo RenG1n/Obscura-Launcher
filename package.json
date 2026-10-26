@@ -1,11 +1,11 @@
 {
   "name": "obscura-launcher",
   "productName": "Obscura",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "Obscura — Minecraft Java Edition launcher",
   "main": "src/main/main.js",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": "Obscura",
   "engines": {
     "node": ">=22"
@@ -35,9 +35,11 @@
     },
     "files": [
       "src/**/*",
+      "build/icon.ico",
       "package.json"
     ],
     "win": {
+      "icon": "build/icon.ico",
       "target": [
         {
           "target": "nsis",
@@ -46,13 +48,16 @@
           ]
         }
       ],
-      "signAndEditExecutable": false
+      "signAndEditExecutable": true
     },
     "nsis": {
       "oneClick": false,
       "perMachine": false,
       "allowToChangeInstallationDirectory": true,
-      "artifactName": "Obscura-Setup-${version}.${ext}"
+      "artifactName": "Obscura-Setup-${version}.${ext}",
+      "installerIcon": "build/icon.ico",
+      "uninstallerIcon": "build/icon.ico",
+      "installerHeaderIcon": "build/icon.ico"
     },
     "portable": {
       "artifactName": "Obscura-Portable-${version}.${ext}"
