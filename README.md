@@ -1,4 +1,4 @@
-# Obscura — Minecraft Java Launcher
+# Obscura — Minecraft Java Launcher (Beta v0.3.1)
 
 Открытый (MIT) Electron-лаунчер для Minecraft Java Edition. Требуется лицензионный аккаунт Microsoft. Дизайн (матовый тёмный, лаймовый акцент, без градиентов) сохранён.
 
