@@ -1,4 +1,5 @@
 # Obscura — Minecraft Java Launcher
+версия для linux - https://github.com/RenG1n/Obscura-Launcher-Linux
 
 **Release 1.0.0** · [MIT](LICENSE) · Electron · Windows (основная платформа)
 
